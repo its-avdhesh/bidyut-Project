@@ -1,6 +1,7 @@
 const User = require("../models/user.model")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+
 const login = async(req,res) =>{
     try {
         const { email, password } = req.body
@@ -17,11 +18,19 @@ const login = async(req,res) =>{
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
         res.cookie("token", token)
-        return res.status(200).render('dashboard', { token })
+        
+        // Pass user information to dashboard
+        return res.status(200).render('dashboard', { 
+            token,
+            user: {
+                email: user.email,
+                createdAt: user.createdAt,
+                id: user._id
+            }
+        })
         
     } catch (error) {
         return res.status(400).render('login', { error: error.message })
-        
     }
 }
 

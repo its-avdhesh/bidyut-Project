@@ -3,71 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>User Dashboard</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-        .dashboard-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.03"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.03"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.02"/><circle cx="10" cy="50" r="0.5" fill="white" opacity="0.02"/><circle cx="90" cy="30" r="0.5" fill="white" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
             text-align: center;
-        }
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .user-info {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        .logout-btn {
-            background-color: #dc3545;
+            padding: 60px 0 40px;
             color: white;
-            padding: 10px 20px;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            overflow: hidden;
+            margin-top: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 50px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+            border-left-color: #764ba2;
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .info-card .icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+        .info-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+            font-weight: 400;
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+            margin: 10px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .logout-btn:hover {
-            background-color: #c82333;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-        .token-info {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 4px;
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.4);
+        }
+
+        .token-display {
+            background: rgba(237, 242, 247, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 20px;
             margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
             word-break: break-all;
-            font-size: 12px;
+            color: #2d3748;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .dashboard-container {
+                padding: 30px 20px;
+            }
+            
+            .user-info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h2>Welcome to Dashboard!</h2>
-        <div class="user-info">
-            <h3>Successfully Logged In</h3>
-            <p>Your authentication is working!</p>
+    <div class="container">
+        <header>
+            <h1>🎉 Welcome Back!</h1>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-section">
+                <h2>User Dashboard</h2>
+                <% if (typeof user !== 'undefined') { %>
+                <p style="font-size: 1.2rem; color: #718096; margin-bottom: 15px;">
+                    Welcome back, <strong style="color: #667eea;"><%= user.email %></strong>!
+                </p>
+                <% } %>
+                <p style="font-size: 1.1rem; color: #718096; margin-bottom: 30px;">
+                    You're successfully authenticated and ready to explore the application.
+                </p>
+                <div class="status-badge">
+                    ✅ Authentication Successful
+                </div>
+            </div>
+
+            <div class="user-info-grid">
+                <% if (typeof user !== 'undefined') { %>
+                <div class="info-card">
+                    <h3><span class="icon">👤</span> User Profile</h3>
+                    <p><strong>Email:</strong> <%= user.email %></p>
+                    <p><strong>User ID:</strong> <%= user.id %></p>
+                    <% if (user.createdAt) { %>
+                    <p><strong>Member Since:</strong> <%= new Date(user.createdAt).toLocaleDateString() %></p>
+                    <% } %>
+                </div>
+                <% } %>
+                <div class="info-card">
+                    <h3><span class="icon">🔐</span> Security</h3>
+                    <p>Your session is protected with encrypted tokens and secure cookie handling.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><span class="icon">🌐</span> Application</h3>
+                    <p>Full-stack Node.js application with MongoDB Atlas database integration.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><span class="icon">⚡</span> Performance</h3>
+                    <p>Optimized for cloud deployment with Docker containerization.</p>
+                </div>
+            </div>
+
+            <% if (typeof token !== 'undefined') { %>
+            <div style="text-align: center; margin: 30px 0;">
+                <h3 style="color: #4a5568; margin-bottom: 15px;">Session Information</h3>
+                <div class="token-display">
+                    <strong>JWT Token:</strong><br>
+                    <%= token %>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">
+                    🏠 Back to Home
+                </a>
+                <a href="/logout" class="btn btn-secondary">
+                    🚪 Logout
+                </a>
+            </div>
         </div>
-        
-        <% if (typeof token !== 'undefined') { %>
-        <div class="token-info">
-            <strong>Your JWT Token:</strong><br>
-            <%= token %>
-        </div>
-        <% } %>
-        
-        <a href="/logout" class="logout-btn">Logout</a>
     </div>
 </body>
 </html>
