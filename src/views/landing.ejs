@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Infrastructure Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.03"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.03"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.02"/><circle cx="10" cy="50" r="0.5" fill="white" opacity="0.02"/><circle cx="90" cy="30" r="0.5" fill="white" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: white;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            overflow: hidden;
+            margin-top: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(233, 236, 239, 0.5);
+            position: relative;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 24px 20px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #6c757d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-button:hover::before {
+            opacity: 1;
+        }
+
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border-bottom: 3px solid transparent;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9) 90%, #667eea 90%);
+        }
+
+        .tab-button:hover {
+            background: rgba(233, 236, 239, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .tab-content {
+            padding: 50px;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .infrastructure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .infra-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .infra-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .infra-card:hover::before {
+            opacity: 1;
+        }
+
+        .infra-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+            border-left-color: #764ba2;
+        }
+
+        .infra-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .infra-card .icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+        .infra-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+            font-weight: 400;
+        }
+
+        .workflow-diagram {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .workflow-diagram h3 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .workflow-step {
+            background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            flex: 1;
+            min-width: 140px;
+            margin: 5px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .workflow-step strong {
+            color: #2d3748;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .workflow-step small {
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tech-badge:hover::before {
+            left: 100%;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-container {
+            max-width: 450px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #2d3748;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        input[type="email"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .auth-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-link a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-link a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .auth-link a:hover {
+            color: #764ba2;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+            border-radius: 10px;
+            border: 1px solid #fc8181;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(229, 62, 62, 0.15);
+        }
+
+        .success {
+            color: #38a169;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+            border-radius: 10px;
+            border: 1px solid #68d391;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(56, 161, 105, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            header p {
+                font-size: 1.1rem;
+            }
+            
+            .tab-content {
+                padding: 30px 20px;
+            }
+            
+            .workflow-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .workflow-step:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                bottom: -30px;
+                top: auto;
+                transform: translateX(50%);
+            }
+            
+            .infrastructure-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .infra-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .tab-button {
+                padding: 16px 12px;
+                font-size: 0.95rem;
+            }
+            
+            .workflow-step {
+                min-width: 120px;
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Project Infrastructure Dashboard</h1>
+            <p>Node.js + Express + EJS + MongoDB Atlas - Cloud-Native Deployment</p>
+        </header>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab('infrastructure')">🏗️ Infrastructure</button>
+                <button class="tab-button" onclick="showTab('register')">📝 Register</button>
+                <button class="tab-button" onclick="showTab('login')">🔐 Login</button>
+            </div>
+
+            <!-- Infrastructure Tab -->
+            <div id="infrastructure" class="tab-content active">
+                <h2>System Architecture & Infrastructure</h2>
+                
+                <div class="workflow-diagram">
+                    <h3>Deployment Workflow</h3>
+                    <div class="workflow-steps">
+                        <div class="workflow-step">
+                            <strong>Local Code</strong><br>
+                            <small>Your Development Machine</small>
+                        </div>
+                        <div class="workflow-step">
+                            <strong>Docker Build</strong><br>
+                            <small>Container Image Creation</small>
+                        </div>
+                        <div class="workflow-step">
+                            <strong>Push to ECR</strong><br>
+                            <small>AWS Container Registry</small>
+                        </div>
+                        <div class="workflow-step">
+                            <strong>EC2 Deploy</strong><br>
+                            <small>Cloud Server Instance</small>
+                        </div>
+                        <div class="workflow-step">
+                            <strong>Live App</strong><br>
+                            <small>Public IP:3000</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infrastructure-grid">
+                    <div class="infra-card">
+                        <h3><span class="icon">🟢</span> Backend</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">Express</span>
+                            <span class="tech-badge">EJS</span>
+                        </div>
+                        <p>Server-side rendered application with RESTful APIs and authentication.</p>
+                    </div>
+
+                    <div class="infra-card">
+                        <h3><span class="icon">🗄️</span> Database</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">MongoDB Atlas</span>
+                            <span class="tech-badge">Cloud</span>
+                        </div>
+                        <p>Managed NoSQL database with automatic backups and scaling.</p>
+                    </div>
+
+                    <div class="infra-card">
+                        <h3><span class="icon">🐳</span> Containerization</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Docker</span>
+                            <span class="tech-badge">Docker Compose</span>
+                        </div>
+                        <p>Containerized deployment with consistent environments.</p>
+                    </div>
+
+                    <div class="infra-card">
+                        <h3><span class="icon">☁️</span> Cloud Hosting</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">AWS EC2</span>
+                            <span class="tech-badge">AWS ECR</span>
+                        </div>
+                        <p>Scalable cloud infrastructure with container registry.</p>
+                    </div>
+
+                    <div class="infra-card">
+                        <h3><span class="icon">🔐</span> Security</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">JWT</span>
+                            <span class="tech-badge">bcrypt</span>
+                            <span class="tech-badge">HTTPS</span>
+                        </div>
+                        <p>Secure authentication with encrypted data transmission.</p>
+                    </div>
+
+                    <div class="infra-card">
+                        <h3><span class="icon">🚀</span> Performance</h3>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Load Balancing</span>
+                            <span class="tech-badge">Auto-scaling</span>
+                            <span class="tech-badge">CDN</span>
+                        </div>
+                        <p>High availability with horizontal scaling capabilities.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Tab -->
+            <div id="register" class="tab-content">
+                <div class="form-container">
+                    <h2>Create Your Account</h2>
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="error"><%= error %></div>
+                    <% } %>
+                    <form action="/user/register" method="POST">
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" id="email" name="email" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required placeholder="Create a strong password">
+                        </div>
+                        <button type="submit">Create Account</button>
+                    </form>
+                    <div class="auth-link">
+                        <p>Already have an account? <a href="#" onclick="showTab('login')">Sign in here</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Tab -->
+            <div id="login" class="tab-content">
+                <div class="form-container">
+                    <h2>Welcome Back</h2>
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="error"><%= error %></div>
+                    <% } %>
+                    <% if (typeof success !== 'undefined') { %>
+                        <div class="success"><%= success %></div>
+                    <% } %>
+                    <form action="/user/login" method="POST">
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" id="email" name="email" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required placeholder="Enter your password">
+                        </div>
+                        <button type="submit">Sign In</button>
+                    </form>
+                    <div class="auth-link">
+                        <p>Don't have an account? <a href="#" onclick="showTab('register')">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate corresponding button
+            const buttonIndex = tabName === 'infrastructure' ? 0 : tabName === 'register' ? 1 : 2;
+            tabButtons[buttonIndex].classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: <your-ecr-url>:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - "MONGO_URI=mongodb+srv://Avdhesh:zK1sXOo6Xiy9hKSu@deletelater.7mrpe1e.mongodb.net/Backend5"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
