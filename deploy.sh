@@ -10,6 +10,7 @@ AWS_REGION="us-east-1"
 ECR_REPOSITORY="bidyut-project"
 EC2_INSTANCE_IP="your-ec2-public-ip"
 APP_NAME="bidyut-app"
+ENV_FILE="/home/ec2-user/.env"
 
 echo "🚀 Starting AWS Deployment Process..."
 
@@ -40,10 +41,37 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/your-key.pem ec2-user@$EC2_INSTANCE_IP
     docker stop $APP_NAME || true
     docker rm $APP_NAME || true
     
-    # Run new container
-    docker run -d -p 3000:3000 --name $APP_NAME --restart unless-stopped $ECR_URI/$ECR_REPOSITORY:latest
+    # Run new container with environment variables
+    docker run -d \
+        --name $APP_NAME \
+        -p 3000:3000 \
+        --restart unless-stopped \
+        --env-file $ENV_FILE \
+        $ECR_URI/$ECR_REPOSITORY:latest
+    
+    # Wait for container to start
+    sleep 5
+    
+    # Check container status
+    if docker ps | grep -q $APP_NAME; then
+        echo "✅ Container is running successfully"
+        
+        # Health check
+        sleep 10
+        if curl -f http://localhost:3000 > /dev/null 2>&1; then
+            echo "✅ Health check passed - Application is responding"
+        else
+            echo "⚠️  Health check failed - Checking logs..."
+            docker logs $APP_NAME
+        fi
+    else
+        echo "❌ Container failed to start - Checking logs..."
+        docker logs $APP_NAME
+        exit 1
+    fi
     
     echo "✅ Deployment completed successfully!"
 EOF
 
 echo "🎉 Deployment completed! Your application is now live at http://$EC2_INSTANCE_IP:3000"
+echo "📋 To check logs: ssh -i ~/.ssh/your-key.pem ec2-user@$EC2_INSTANCE_IP 'docker logs $APP_NAME'"

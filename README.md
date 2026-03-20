@@ -232,9 +232,15 @@ jobs:
 
 ### Common Issues
 
-1. **MongoDB Connection**
-   - Verify connection string in `.env`
-   - Check network access settings in MongoDB Atlas
+1. **MongoDB Connection Timeout**
+   ```
+   Operation `users.findOne()` buffering timed out after 10000ms
+   ```
+   **Solution:**
+   - Ensure MongoDB Atlas network access allows your EC2 IP
+   - Check connection string in `.env` file
+   - Verify proper connection options (already configured in db.js)
+   - Use `.env.example` as template for production environment
 
 2. **Docker Build Errors**
    - Ensure all dependencies in `package.json`
@@ -243,6 +249,7 @@ jobs:
 3. **EC2 Deployment**
    - Verify security group allows port 3000
    - Check IAM permissions for ECR access
+   - Ensure environment file exists at `/home/ec2-user/.env`
 
 4. **Authentication Issues**
    - Verify JWT_SECRET in environment
@@ -258,6 +265,9 @@ mongosh your-connection-string
 
 # Verify ECR repository
 aws ecr describe-repositories --repository-names bidyut-project
+
+# Check container health
+curl -f http://your-ec2-ip:3000
 ```
 
 ## 📈 Scaling Considerations
