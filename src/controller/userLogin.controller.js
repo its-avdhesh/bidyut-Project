@@ -6,31 +6,31 @@ const login = async(req,res) =>{
     try {
         const { email, password } = req.body
         if( !email || !password ){
-            return res.status(400).render('login', { error: "Email and password are required" })
+            return res.status(400).redirect('/login?error=Email and password are required')
         }       
         const user = await User.findOne({ email })
         if(!user){
-            return res.status(400).render('login', { error: "Invalid email or password" })
+            return res.status(400).redirect('/login?error=Invalid email or password')
         }
         const isPasswordValid = await bcrypt.compare(password, user.password)
         if( !isPasswordValid ){
-            return res.status(400).render('login', { error: "Invalid email or password" })
+            return res.status(400).redirect('/login?error=Invalid email or password')
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
-        res.cookie("token", token)
         
-        // Pass user information to dashboard
-        return res.status(200).render('dashboard', { 
-            token,
-            user: {
-                email: user.email,
-                createdAt: user.createdAt,
-                id: user._id
-            }
+        // Set cookie with proper options
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // Set to true in production with HTTPS
+            maxAge: 3600000, // 1 hour in milliseconds
+            sameSite: 'lax'
         })
         
+        // Pass user information to dashboard
+        return res.status(200).redirect('/dashboard')
+        
     } catch (error) {
-        return res.status(400).render('login', { error: error.message })
+        return res.status(400).redirect('/login?error=Login failed. Please try again.')
     }
 }
 

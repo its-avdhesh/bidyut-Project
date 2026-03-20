@@ -649,51 +649,26 @@
 
             <!-- Register Tab -->
             <div id="register" class="tab-content">
-                <div class="form-container">
-                    <h2>Create Your Account</h2>
-                    <% if (typeof error !== 'undefined') { %>
-                        <div class="error"><%= error %></div>
-                    <% } %>
-                    <form action="/user/register" method="POST">
-                        <div class="form-group">
-                            <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" required placeholder="Enter your email">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" required placeholder="Create a strong password">
-                        </div>
-                        <button type="submit">Create Account</button>
-                    </form>
-                    <div class="auth-link">
-                        <p>Already have an account? <a href="#" onclick="showTab('login')">Sign in here</a></p>
+                <div class="auth-tab-content" id="register-tab" style="display: block;">
+                    <div class="auth-form">
+                        <h3>📝 Create Account</h3>
+                        <p>Click below to go to the registration page</p>
+                        <a href="/register" class="auth-btn">
+                            Go to Register
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Login Tab -->
             <div id="login" class="tab-content">
-                <div class="form-container">
-                    <h2>Welcome Back</h2>
-                    <% if (typeof error !== 'undefined') { %>
-                        <div class="error"><%= error %></div>
-                    <% } %>
-                    <% if (typeof success !== 'undefined') { %>
-                        <div class="success"><%= success %></div>
-                    <% } %>
-                    <form action="/user/login" method="POST">
-                        <div class="form-group">
-                            <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" required placeholder="Enter your email">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" required placeholder="Enter your password">
-                        </div>
-                        <button type="submit">Sign In</button>
-                    </form>
-                    <div class="auth-link">
-                        <p>Don't have an account? <a href="#" onclick="showTab('register')">Register here</a></p>
+                <div class="auth-tab-content" id="login-tab" style="display: block;">
+                    <div class="auth-form">
+                        <h3>👤 Sign In</h3>
+                        <p>Click below to go to the login page</p>
+                        <a href="/login" class="auth-btn">
+                            Go to Login
+                        </a>
                     </div>
                 </div>
             </div>

@@ -11,16 +11,50 @@ app.use("/user", userRoutes)
 
 // View routes
 app.get('/register', (req, res) => {
-    res.render('register')
+    const error = req.query.error
+    const success = req.query.success
+    res.render('register', { error, success })
 })
 
 app.get('/login', (req, res) => {
-    res.render('login')
+    const error = req.query.error
+    const success = req.query.success
+    res.render('login', { error, success })
 })
 
 app.get('/logout', (req, res) => {
     res.clearCookie('token')
     res.render('login', { success: "Logged out successfully!" })
+})
+
+app.get('/dashboard', async (req, res) => {
+    try {
+        const token = req.cookies.token
+        if (!token) {
+            return res.redirect('/login?error=Please login to access dashboard')
+        }
+
+        const jwt = require('jsonwebtoken')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const User = require('./models/user.model')
+        
+        const user = await User.findById(decoded.id)
+        if (!user) {
+            return res.redirect('/login?error=User not found')
+        }
+
+        res.render('dashboard', { 
+            token,
+            user: {
+                email: user.email,
+                createdAt: user.createdAt,
+                id: user._id
+            }
+        })
+    } catch (error) {
+        console.error('Dashboard JWT verification error:', error.message)
+        res.redirect('/login?error=Invalid session. Please login again.')
+    }
 })
 
 app.get('/', (req, res) => {
