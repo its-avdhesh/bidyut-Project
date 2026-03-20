@@ -1,3 +1,4 @@
+require('dotenv').config()
 const User = require("../models/user.model")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
@@ -26,8 +27,8 @@ const login = async(req,res) =>{
             sameSite: 'lax'
         })
         
-        // Pass user information to dashboard
-        return res.status(200).redirect('/dashboard')
+        // Pass user information to infrastructure page
+        return res.status(200).redirect('/infrastructure')
         
     } catch (error) {
         return res.status(400).redirect('/login?error=Login failed. Please try again.')
