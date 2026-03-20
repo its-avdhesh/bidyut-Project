@@ -211,334 +211,87 @@
             gap: 12px;
             font-weight: 700;
             font-size: 1.3rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .infra-card .icon {
-            font-size: 1.8rem;
-            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
-        }
-
-        .infra-card p {
-            color: #4a5568;
-            line-height: 1.7;
-            position: relative;
-            z-index: 2;
-            font-weight: 400;
-        }
-
-        .workflow-diagram {
-            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            margin: 40px 0;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .workflow-diagram h3 {
             color: #2d3748;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 12px;
         }
 
-        .workflow-steps {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 40px 0;
-            flex-wrap: wrap;
-            gap: 20px;
+        .infrastructure-card p {
+            color: #718096;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
 
         .workflow-step {
-            background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
-            padding: 25px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            flex: 1;
-            min-width: 140px;
-            margin: 5px;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(102, 126, 234, 0.1);
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
-        .workflow-step:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
-            border-color: rgba(102, 126, 234, 0.3);
+        .workflow-step-number {
+            width: 32px;
+            height: 32px;
+            background: #3182ce;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-right: 16px;
+            flex-shrink: 0;
         }
 
-        .workflow-step strong {
+        .workflow-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
             color: #2d3748;
-            font-weight: 700;
-            display: block;
             margin-bottom: 8px;
-            font-size: 1.1rem;
         }
 
-        .workflow-step small {
+        .workflow-content p {
             color: #718096;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
 
-        .workflow-step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -25px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            color: #667eea;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
-        }
-
-        .tech-stack {
+        .tech-badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin: 25px 0;
+            gap: 8px;
+            margin-top: 16px;
         }
 
         .tech-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tech-badge::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .tech-badge:hover::before {
-            left: 100%;
-        }
-
-        .tech-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .form-container {
-            max-width: 450px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .form-container h2 {
-            text-align: center;
+            background: #edf2f7;
             color: #2d3748;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #4a5568;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-        }
-
-        input[type="email"]:focus, input[type="password"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-
-        button {
-            width: 100%;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        button:hover::before {
-            left: 100%;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .auth-link {
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .auth-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .auth-link a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .auth-link a:hover::after {
-            transform: scaleX(1);
-        }
-
-        .auth-link a:hover {
-            color: #764ba2;
-        }
-
-        .error {
-            color: #e53e3e;
-            margin-bottom: 20px;
-            text-align: center;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-            border-radius: 10px;
-            border: 1px solid #fc8181;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 500;
-            box-shadow: 0 2px 8px rgba(229, 62, 62, 0.15);
-        }
-
-        .success {
-            color: #38a169;
-            margin-bottom: 20px;
-            text-align: center;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
-            border-radius: 10px;
-            border: 1px solid #68d391;
-            font-weight: 500;
-            box-shadow: 0 2px 8px rgba(56, 161, 105, 0.15);
+            border: 1px solid #e2e8f0;
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
+            .container {
+                padding: 20px 16px;
             }
             
-            header p {
-                font-size: 1.1rem;
-            }
-            
-            .tab-content {
-                padding: 30px 20px;
-            }
-            
-            .workflow-steps {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .workflow-step:not(:last-child)::after {
-                content: '↓';
-                right: 50%;
-                bottom: -30px;
-                top: auto;
-                transform: translateX(50%);
-            }
-            
-            .infrastructure-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .infra-card {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 480px) {
             header h1 {
                 font-size: 2rem;
             }
             
-            .tab-button {
-                padding: 16px 12px;
-                font-size: 0.95rem;
+            .tab-content {
+                padding: 32px 24px;
             }
             
-            .workflow-step {
-                min-width: 120px;
-                padding: 20px 15px;
+            .infrastructure-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
         }
     </style>
@@ -546,130 +299,147 @@
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Project Infrastructure Dashboard</h1>
-            <p>Node.js + Express + EJS + MongoDB Atlas - Cloud-Native Deployment</p>
+            <h1>Project Infrastructure</h1>
+            <p>Cloud-native web application with modern architecture and deployment workflow</p>
         </header>
 
         <div class="tab-container">
             <div class="tab-buttons">
-                <button class="tab-button active" onclick="showTab('infrastructure')">🏗️ Infrastructure</button>
-                <button class="tab-button" onclick="showTab('register')">📝 Register</button>
-                <button class="tab-button" onclick="showTab('login')">🔐 Login</button>
+                <button class="tab-button active" onclick="showTab('infrastructure')">Infrastructure</button>
+                <button class="tab-button" onclick="showTab('register')">Sign Up</button>
+                <button class="tab-button" onclick="showTab('login')">Sign In</button>
             </div>
 
             <!-- Infrastructure Tab -->
-            <div id="infrastructure" class="tab-content active">
-                <h2>System Architecture & Infrastructure</h2>
-                
-                <div class="workflow-diagram">
-                    <h3>Deployment Workflow</h3>
-                    <div class="workflow-steps">
-                        <div class="workflow-step">
-                            <strong>Local Code</strong><br>
-                            <small>Your Development Machine</small>
-                        </div>
-                        <div class="workflow-step">
-                            <strong>Docker Build</strong><br>
-                            <small>Container Image Creation</small>
-                        </div>
-                        <div class="workflow-step">
-                            <strong>Push to ECR</strong><br>
-                            <small>AWS Container Registry</small>
-                        </div>
-                        <div class="workflow-step">
-                            <strong>EC2 Deploy</strong><br>
-                            <small>Cloud Server Instance</small>
-                        </div>
-                        <div class="workflow-step">
-                            <strong>Live App</strong><br>
-                            <small>Public IP:3000</small>
-                        </div>
-                    </div>
-                </div>
-
+            <div id="infrastructure" class="tab-content" style="display: block;">
                 <div class="infrastructure-grid">
-                    <div class="infra-card">
-                        <h3><span class="icon">🟢</span> Backend</h3>
-                        <div class="tech-stack">
+                    <div class="infrastructure-card">
+                        <h4>🟢 Backend Technology</h4>
+                        <p>Node.js + Express.js + EJS Server-side rendered web application with RESTful API endpoints and authentication system.</p>
+                        <div class="tech-badges">
                             <span class="tech-badge">Node.js</span>
                             <span class="tech-badge">Express</span>
                             <span class="tech-badge">EJS</span>
                         </div>
-                        <p>Server-side rendered application with RESTful APIs and authentication.</p>
                     </div>
 
-                    <div class="infra-card">
-                        <h3><span class="icon">🗄️</span> Database</h3>
-                        <div class="tech-stack">
-                            <span class="tech-badge">MongoDB Atlas</span>
-                            <span class="tech-badge">Cloud</span>
+                    <div class="infrastructure-card">
+                        <h4>🗄️ Database Layer</h4>
+                        <p>MongoDB Atlas Cloud Database Managed NoSQL database service providing scalable, secure data storage with automatic backups.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">MongoDB</span>
+                            <span class="tech-badge">Atlas</span>
+                            <span class="tech-badge">NoSQL</span>
                         </div>
-                        <p>Managed NoSQL database with automatic backups and scaling.</p>
                     </div>
 
-                    <div class="infra-card">
-                        <h3><span class="icon">🐳</span> Containerization</h3>
-                        <div class="tech-stack">
+                    <div class="infrastructure-card">
+                        <h4>🐳 Containerization</h4>
+                        <p>Docker + Docker Compose Application containerized for consistent deployment across environments with dependency management.</p>
+                        <div class="tech-badges">
                             <span class="tech-badge">Docker</span>
                             <span class="tech-badge">Docker Compose</span>
                         </div>
-                        <p>Containerized deployment with consistent environments.</p>
                     </div>
 
-                    <div class="infra-card">
-                        <h3><span class="icon">☁️</span> Cloud Hosting</h3>
-                        <div class="tech-stack">
-                            <span class="tech-badge">AWS EC2</span>
-                            <span class="tech-badge">AWS ECR</span>
+                    <div class="infrastructure-card">
+                        <h4>☁️ Cloud Infrastructure</h4>
+                        <p>AWS EC2 + ECR Scalable cloud hosting with container registry for secure image storage and deployment.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">AWS</span>
+                            <span class="tech-badge">EC2</span>
+                            <span class="tech-badge">ECR</span>
                         </div>
-                        <p>Scalable cloud infrastructure with container registry.</p>
                     </div>
 
-                    <div class="infra-card">
-                        <h3><span class="icon">🔐</span> Security</h3>
-                        <div class="tech-stack">
+                    <div class="infrastructure-card">
+                        <h4>🔐 Security Features</h4>
+                        <p>JWT Tokens bcrypt HTTPS Secure authentication with password hashing, token-based sessions, and encrypted data transmission.</p>
+                        <div class="tech-badges">
                             <span class="tech-badge">JWT</span>
                             <span class="tech-badge">bcrypt</span>
                             <span class="tech-badge">HTTPS</span>
                         </div>
-                        <p>Secure authentication with encrypted data transmission.</p>
                     </div>
 
-                    <div class="infra-card">
-                        <h3><span class="icon">🚀</span> Performance</h3>
-                        <div class="tech-stack">
-                            <span class="tech-badge">Load Balancing</span>
+                    <div class="infrastructure-card">
+                        <h4>🚀 Performance & Scaling</h4>
+                        <p>Load Balancing Auto-scaling CDN Ready Optimized for high availability with horizontal scaling capabilities and global content delivery.</p>
+                        <div class="tech-badges">
                             <span class="tech-badge">Auto-scaling</span>
                             <span class="tech-badge">CDN</span>
                         </div>
-                        <p>High availability with horizontal scaling capabilities.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 48px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: #2d3748; margin-bottom: 24px; text-align: center;">Deployment Workflow</h3>
+                    
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">1</div>
+                        <div class="workflow-content">
+                            <h4>Local Development</h4>
+                            <p>Your Code (local) - Write and test your application in the development environment.</p>
+                        </div>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">2</div>
+                        <div class="workflow-content">
+                            <h4>Docker Build</h4>
+                            <p>Docker Build (creates image) - Containerize your application for consistent deployment.</p>
+                        </div>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">3</div>
+                        <div class="workflow-content">
+                            <h4>Push to ECR</h4>
+                            <p>Push to AWS ECR (stores image) - Upload your container image to AWS Elastic Container Registry.</p>
+                        </div>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">4</div>
+                        <div class="workflow-content">
+                            <h4>EC2 Deployment</h4>
+                            <p>EC2 pulls image from ECR - Deploy your container to AWS EC2 instances.</p>
+                        </div>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">5</div>
+                        <div class="workflow-content">
+                            <h4>Live Application</h4>
+                            <p>Docker Compose runs it on EC2 - Your application is live and accessible via public IP.</p>
+                        </div>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-step-number">6</div>
+                        <div class="workflow-content">
+                            <h4>Database Connection</h4>
+                            <p>Connects to MongoDB Atlas - Your application connects to cloud database for data persistence.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Register Tab -->
             <div id="register" class="tab-content">
-                <div class="auth-tab-content" id="register-tab" style="display: block;">
-                    <div class="auth-form">
-                        <h3>📝 Create Account</h3>
-                        <p>Click below to go to the registration page</p>
-                        <a href="/register" class="auth-btn">
-                            Go to Register
-                        </a>
-                    </div>
+                <div class="auth-form">
+                    <h3>Create Account</h3>
+                    <p>Get started with your new account</p>
+                    <a href="/register" class="auth-btn">Go to Registration</a>
                 </div>
             </div>
 
             <!-- Login Tab -->
             <div id="login" class="tab-content">
-                <div class="auth-tab-content" id="login-tab" style="display: block;">
-                    <div class="auth-form">
-                        <h3>👤 Sign In</h3>
-                        <p>Click below to go to the login page</p>
-                        <a href="/login" class="auth-btn">
-                            Go to Login
-                        </a>
-                    </div>
+                <div class="auth-form">
+                    <h3>Sign In</h3>
+                    <p>Access your existing account</p>
+                    <a href="/login" class="auth-btn">Go to Login</a>
                 </div>
             </div>
         </div>
@@ -679,14 +449,14 @@
         function showTab(tabName) {
             // Hide all tabs
             const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(tab => tab.style.display = 'none');
             
             // Remove active class from all buttons
             const tabButtons = document.querySelectorAll('.tab-button');
             tabButtons.forEach(button => button.classList.remove('active'));
             
             // Show selected tab
-            document.getElementById(tabName).classList.add('active');
+            document.getElementById(tabName).style.display = 'block';
             
             // Activate corresponding button
             const buttonIndex = tabName === 'infrastructure' ? 0 : tabName === 'register' ? 1 : 2;
